@@ -1,0 +1,2 @@
+# ppd
+OpenMP e OpenMPI
