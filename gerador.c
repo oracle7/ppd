@@ -4,6 +4,36 @@
 #include <omp.h>
 #include <limits.h>
 
+/*
+ * gerador.c
+ *
+ * Geração de matrizes e vetores para testes de sistemas lineares Ax = b.
+ * Este programa cria um arquivo binário contendo:
+ *   - [int]     n         → ordem da matriz
+ *   - [float]   A[n][n]   → matriz dos coeficientes
+ *   - [float]   b[n]      → vetor dos termos independentes
+ *
+ * A matriz A é gerada com valores aleatórios ou com estrutura de diagonal dominante,
+ * dependendo do parâmetro "tipo". A geração é paralelizada com OpenMP para acelerar
+ * a escrita das linhas da matriz. O vetor b é gerado sequencialmente com valores suaves.
+ *
+ * Parâmetros:
+ *   - ordem         → número de linhas/colunas da matriz (até INT_MAX)
+ *   - arquivo_saida → nome do arquivo binário a ser gerado
+ *   - tipo          → opcional: 0 (aleatória - padrão), 1 (diagonal dominante)
+ *
+ * Uso:
+ *   ./gerador <ordem> <arquivo_saida> [tipo]
+ *
+ * Exemplo:
+ *   ./gerador 1000 matriz.bin 1
+ *
+ * Observações:
+ *   - O gerador assume ambiente controlado e não realiza validação numérica da matriz.
+ *   - O arquivo gerado é compatível com os programas resolve_matriz_sequencial.c e resolve_matriz.c.
+ */
+
+
 float gerar_valor(int i, int j, int tipo, int n) {
     if (tipo == 1) {
         if (i == j) return n * 10.0f;  // força diagonal dominante
